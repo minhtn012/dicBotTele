@@ -1,5 +1,6 @@
 {
     "require": {
-      "silex/silex": "~1.1"
+      "silex/silex": "~1.1",
+        "eleirbag89/telegrambotphp": "^1.3"
     }
   }
