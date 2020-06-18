@@ -13,9 +13,9 @@ class ComposerStaticInit43f05e3ed50b516f20d083b303519e9a
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '547f39254e5312c66b30c9b6a7d3570f' => __DIR__ . '/..' . '/eleirbag89/telegrambotphp/Telegram.php',
         '221a7c0887f892e44dd08191321d3815' => __DIR__ . '/..' . '/eleirbag89/telegrambotphp/TelegramErrorLogger.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -35,10 +35,6 @@ class ComposerStaticInit43f05e3ed50b516f20d083b303519e9a
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
-        ),
-        'L' => 
-        array (
-            'Longman\\TelegramBot\\' => 20,
         ),
         'G' => 
         array (
@@ -92,10 +88,6 @@ class ComposerStaticInit43f05e3ed50b516f20d083b303519e9a
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
-        ),
-        'Longman\\TelegramBot\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/longman/telegram-bot/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

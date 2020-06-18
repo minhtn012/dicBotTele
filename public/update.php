@@ -6,6 +6,23 @@
  */
 include 'Telegram.php';
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Exception\RequestException;
+
+$client = new Client([
+    // Base URI is used with relative requests
+    'base_uri' => 'https://od-api.oxforddictionaries.com/api/v2/entries/en-us/',
+    // You can set any number of default request options.
+    'timeout'  => 5.0,
+]);
+
+
+
+
 // Set the bot TOKEN
 $bot_token = '1193195079:AAFnxQ5TJRoAtJiI1G13K9MzjIyCcqNkQMw';
 // Instances the class
@@ -21,6 +38,40 @@ $telegram = new Telegram($bot_token);
 $text = $telegram->Text();
 $chat_id = $telegram->ChatID();
 
+
+$responseRaw = $client->request('GET', '/'.$text, [
+    'headers' => [
+        'app_id' => 'c4ae583c',
+        'app_key'     => '10740a00580c552c0e4c89e12ccd448b'
+    ]
+]);
+
+$response = json_decode($responseRaw);
+
+if ($response->error) {
+    $text = $response->error;
+    $content = ['chat_id' => $chat_id, 'text' => $text];
+        $telegram->sendMessage($content);
+}
+
+if ($response->results) {
+    $lexicalEntries = $response->results->lexicalEntries;
+    foreach ($lexicalEntries as $key => $value) {
+        $lexicalCategory = $value->lexicalCategory;
+        $entries = $value->entries;
+        $spelling = $entries->pronunciations->phoneticSpelling;
+        $senses = $entries->senses->shortDefinitions;
+        $text1 = $text . ' - ' . $lexicalCategory . ' - ' . '$spelling';
+        $text2 = $senses;
+
+        $content1 = ['chat_id' => $chat_id, 'text' => $text1];
+        $telegram->sendMessage($content1);
+
+        $content2 = ['chat_id' => $chat_id, 'text' => $text2];
+        $telegram->sendMessage($content2);
+    }
+
+}
 // Test CallBack
 $callback_query = $telegram->Callback_Query();
 if ($callback_query !== null && $callback_query != '') {
