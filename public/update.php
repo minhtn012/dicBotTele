@@ -23,7 +23,7 @@ $telegram = new Telegram($bot_token);
 $text = $telegram->Text();
 $chat_id = $telegram->ChatID();
 
-$client = new Client([
+/* $client = new Client([
     // Base URI is used with relative requests
     'base_uri' => 'https://od-api.oxforddictionaries.com/api/v2/entries/en-us/',
     // You can set any number of default request options.
@@ -39,7 +39,7 @@ $responseRaw = $client->request('GET', '/'.$text, [
 ]);
 $content1 = ['chat_id' => $chat_id, 'text' => $responseRaw];
         $telegram->sendMessage($content1);
-        
+
 $response = json_decode($responseRaw);
 
 if ($response->error) {
@@ -65,7 +65,7 @@ if ($response->results) {
         $telegram->sendMessage($content2);
     }
 
-}
+} */
 // Test CallBack
 $callback_query = $telegram->Callback_Query();
 if ($callback_query !== null && $callback_query != '') {
