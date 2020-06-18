@@ -7,21 +7,6 @@
 include 'Telegram.php';
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Exception\RequestException;
-
-$client = new Client([
-    // Base URI is used with relative requests
-    'base_uri' => 'https://od-api.oxforddictionaries.com/api/v2/entries/en-us/',
-    // You can set any number of default request options.
-    'timeout'  => 5.0,
-]);
-
-
-
 
 // Set the bot TOKEN
 $bot_token = '1193195079:AAFnxQ5TJRoAtJiI1G13K9MzjIyCcqNkQMw';
@@ -38,14 +23,23 @@ $telegram = new Telegram($bot_token);
 $text = $telegram->Text();
 $chat_id = $telegram->ChatID();
 
+$client = new Client([
+    // Base URI is used with relative requests
+    'base_uri' => 'https://od-api.oxforddictionaries.com/api/v2/entries/en-us/',
+    // You can set any number of default request options.
+    'timeout'  => 5.0,
+]);
+
 
 $responseRaw = $client->request('GET', '/'.$text, [
     'headers' => [
         'app_id' => 'c4ae583c',
-        'app_key'     => '10740a00580c552c0e4c89e12ccd448b'
+        'app_key' => '10740a00580c552c0e4c89e12ccd448b'
     ]
 ]);
-
+$content1 = ['chat_id' => $chat_id, 'text' => $responseRaw];
+        $telegram->sendMessage($content1);
+        
 $response = json_decode($responseRaw);
 
 if ($response->error) {
