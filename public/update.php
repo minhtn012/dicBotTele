@@ -4,9 +4,10 @@
  *
  * @author Gabriele Grillo <gabry.grillo@alice.it>
  */
-include 'Telegram.php';
-
+require_once '../vendor/autoload.php';
+// include_once 'Telegram.php';
 use GuzzleHttp\Client;
+use GuzzleHttp\Stream\Stream;
 
 // Set the bot TOKEN
 $bot_token = '1193195079:AAFnxQ5TJRoAtJiI1G13K9MzjIyCcqNkQMw';
@@ -23,23 +24,44 @@ $telegram = new Telegram($bot_token);
 $text = $telegram->Text();
 $chat_id = $telegram->ChatID();
 
-/* $client = new Client([
+ $client = new Client([
     // Base URI is used with relative requests
     'base_uri' => 'https://od-api.oxforddictionaries.com/api/v2/entries/en-us/',
     // You can set any number of default request options.
     'timeout'  => 5.0,
-]);
-
-
-$responseRaw = $client->request('GET', '/'.$text, [
     'headers' => [
         'app_id' => 'c4ae583c',
         'app_key' => '10740a00580c552c0e4c89e12ccd448b'
     ]
 ]);
-$content1 = ['chat_id' => $chat_id, 'text' => $responseRaw];
-        $telegram->sendMessage($content1);
 
+
+$responseRaw = $client->request('GET', $text)->getBody();
+$test = json_decode($responseRaw);
+$results = $test->results;
+
+foreach ($results as $key => $result) {
+    $lexicalEntries = $result->lexicalEntries;
+    foreach ($lexicalEntries as $key => $lexicalEntry) {
+        $entries = $lexicalEntry->entries;
+        foreach ($entries as $key => $entry) {
+            $pronunciations = $entry->pronunciations[0]->phoneticSpelling;
+            $senses = $entry->senses[0]->shortDefinitions[0];
+            $example = $entry->senses[0]->examples[0]->text;
+
+            $textPronunciations = '- IPA: ' . $pronunciations;
+            $textShortDefinitions = ' - Definition: ' . $senses;
+            $textEx = '- Ex: ' . $example;
+            $text = $textPronunciations . "\n" . $textShortDefinitions . "\n" . $textEx;
+            $content = ['chat_id' => $chat_id, 'text' => $text];
+            $telegram->sendMessage($content);
+        }
+    }
+}
+exit;
+$content1 = ['chat_id' => $chat_id, 'text' => utf8_encode($responseRaw)];
+        $telegram->sendMessage($content1);
+        
 $response = json_decode($responseRaw);
 
 if ($response->error) {
@@ -65,7 +87,7 @@ if ($response->results) {
         $telegram->sendMessage($content2);
     }
 
-} */
+}
 // Test CallBack
 $callback_query = $telegram->Callback_Query();
 if ($callback_query !== null && $callback_query != '') {
