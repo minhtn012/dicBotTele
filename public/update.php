@@ -50,7 +50,7 @@ foreach ($results as $key => $result) {
             $example = $entry->senses[0]->examples[0]->text;
 
             $textPronunciations = '- IPA: ' . $pronunciations;
-            $textShortDefinitions = ' - Definition: ' . $senses;
+            $textShortDefinitions = '- Definition: ' . $senses;
             $textEx = '- Ex: ' . $example;
             $text = $textPronunciations . "\n" . $textShortDefinitions . "\n" . $textEx;
             $content = ['chat_id' => $chat_id, 'text' => $text];
