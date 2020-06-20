@@ -31,7 +31,7 @@ $chat_id = $telegram->ChatID();
     'timeout'  => 5.0,
     'headers' => [
         'app_id' => 'c4ae583c',
-        'app_key' => '10740a00580c552c0e4c89e12ccd448b'
+        'app_key' => 'd8e979979b1f369217c0a251bab4adc1'
     ]
 ]);
 
@@ -51,13 +51,14 @@ foreach ($results as $key => $result) {
 
             $textPronunciations = '- IPA: ' . $pronunciations;
             $textShortDefinitions = '- Definition: ' . $senses;
-            $textEx = '- Ex: ' . $example;
+            $textEx = $example ? '- Ex: ' . $example : '';
             $text = $textPronunciations . "\n" . $textShortDefinitions . "\n" . $textEx;
             $content = ['chat_id' => $chat_id, 'text' => $text];
             $telegram->sendMessage($content);
         }
     }
 }
+print_r('123');
 exit;
 $content1 = ['chat_id' => $chat_id, 'text' => utf8_encode($responseRaw)];
         $telegram->sendMessage($content1);
