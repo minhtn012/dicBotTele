@@ -30,7 +30,7 @@ $chat_id = $telegram->ChatID();
     // You can set any number of default request options.
     'timeout'  => 5.0,
     'headers' => [
-        'app_id' => 'c4ae583c',
+        'app_id' => 'bf9de0e8',
         'app_key' => 'd8e979979b1f369217c0a251bab4adc1'
     ]
 ]);
