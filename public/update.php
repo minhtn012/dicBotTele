@@ -23,7 +23,10 @@ $telegram = new Telegram($bot_token);
 // Take text and chat_id from the message
 $text = $telegram->Text();
 $chat_id = $telegram->ChatID();
+$content = ['chat_id' => $chat_id, 'text' => $text];
+            $telegram->sendMessage($content);
 
+            exit;
  $client = new Client([
     // Base URI is used with relative requests
     'base_uri' => 'https://od-api.oxforddictionaries.com/api/v2/entries/en-us/',
