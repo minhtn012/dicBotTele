@@ -38,7 +38,7 @@ $chat_id = $telegram->ChatID();
 
 $responseRaw = $client->request('GET', $text)->getBody();
 $test = json_decode($responseRaw);
-if($test->error) {
+if($test['error']) {
     $content = ['chat_id' => $chat_id, 'text' => 'not found'];
     $telegram->sendMessage($content);
     exit;
