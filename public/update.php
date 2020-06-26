@@ -23,24 +23,26 @@ $telegram = new Telegram($bot_token);
 // Take text and chat_id from the message
 $text = $telegram->Text();
 $chat_id = $telegram->ChatID();
-$content = ['chat_id' => $chat_id, 'text' => $text];
-            $telegram->sendMessage($content);
 
-            exit;
  $client = new Client([
     // Base URI is used with relative requests
     'base_uri' => 'https://od-api.oxforddictionaries.com/api/v2/entries/en-us/',
     // You can set any number of default request options.
     'timeout'  => 5.0,
     'headers' => [
-        'app_id' => 'bf9de0e8',
-        'app_key' => 'd8e979979b1f369217c0a251bab4adc1'
+        'app_id' => '2ffe53c7',
+        'app_key' => '3cde4009eb5392525109669e576dceba'
     ]
 ]);
 
 
 $responseRaw = $client->request('GET', $text)->getBody();
 $test = json_decode($responseRaw);
+if($test->error) {
+    $content = ['chat_id' => $chat_id, 'text' => 'not found'];
+    $telegram->sendMessage($content);
+    exit;
+}
 $results = $test->results;
 
 foreach ($results as $key => $result) {
