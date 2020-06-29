@@ -23,9 +23,7 @@ $telegram = new Telegram($bot_token);
 // Take text and chat_id from the message
 $text = $telegram->Text();
 $chat_id = $telegram->ChatID();
-$content = ['chat_id' => $chat_id, 'text' => 'not found'];
-    $telegram->sendMessage($content);
-    exit;
+
  $client = new Client([
     // Base URI is used with relative requests
     'base_uri' => 'https://od-api.oxforddictionaries.com/api/v2/entries/en-us/',
@@ -37,35 +35,35 @@ $content = ['chat_id' => $chat_id, 'text' => 'not found'];
     ]
 ]);
 
-
-$responseRaw = $client->request('GET', $text)->getBody();
-$test = json_decode($responseRaw);
-if($test['error']) {
+try {
+    $responseRaw = $client->request('GET', $text)->getBody();
+} catch (\Throwable $th) {
     $content = ['chat_id' => $chat_id, 'text' => 'not found'];
     $telegram->sendMessage($content);
-    exit;
 }
+
+
+$test = json_decode($responseRaw);
 $results = $test->results;
 
 foreach ($results as $key => $result) {
     $lexicalEntries = $result->lexicalEntries;
     foreach ($lexicalEntries as $key => $lexicalEntry) {
         $entries = $lexicalEntry->entries;
-        foreach ($entries as $key => $entry) {
+        foreach ($entries as $key1 => $entry) {
             $pronunciations = $entry->pronunciations[0]->phoneticSpelling;
             $senses = $entry->senses[0]->shortDefinitions[0];
+            $domain = $entry->senses[0]->domains[0]->text;
             $example = $entry->senses[0]->examples[0]->text;
 
-            $textPronunciations = '- IPA: ' . $pronunciations;
-            $textShortDefinitions = '- Definition: ' . $senses;
             $textEx = $example ? '- Ex: ' . $example : '';
-            $text = $textPronunciations . "\n" . $textShortDefinitions . "\n" . $textEx;
+            $textDomain = $domain ? '- Domain: ' . $domain : '';
+            $text = $textPronunciations . "\n" . $textDomain . "\n" . $textShortDefinitions . "\n" . $textEx;
             $content = ['chat_id' => $chat_id, 'text' => $text];
             $telegram->sendMessage($content);
         }
     }
 }
-print_r('123');
 exit;
 $content1 = ['chat_id' => $chat_id, 'text' => utf8_encode($responseRaw)];
         $telegram->sendMessage($content1);
